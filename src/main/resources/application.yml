@@ -1,0 +1,33 @@
+server:
+  port: 8081
+spring:
+  #kafka配置
+  kafka:
+    producer:
+      bootstrap-servers: 172.30.10.5:9092
+      retries: 0
+      # 每次批量发送消息的数量
+      batch-size: 16384
+      # 缓存容量
+      buffer-memory: 33554432
+      properties:
+        max:
+          requst:
+            size: 2097152
+      # 指定消息key和消息体的编解码方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      bootstrap-servers: 172.30.10.5:9092
+      group-id: 0
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      properties:
+        max:
+          partition:
+            fetch:
+              bytes: 2097152
+    # 指定listener 容器中的线程数，用于提高并发量
+    listener:
+      concurrency: 3
